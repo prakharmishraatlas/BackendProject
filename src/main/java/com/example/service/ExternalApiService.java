@@ -1,7 +1,9 @@
 // this file is used to fetch data from external API at regular intervals.
 // also stores the data into the DB
 
-package com.example.demo;
+package com.example.service;
+import com.example.model.FetchedData;
+import com.example.repository.PriceRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,19 +14,19 @@ import java.util.List;
 
 @Service
 public class ExternalApiService {
+
     private static final List<String> METALS = List.of("XAU", "XAG", "XPT", "XPD");
     private static final String CURRENCY = "PKR";
 
-    private final manager repository; // import our manager (ORM)
+    private final PriceRepository repository;
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    // constructor
-    public ExternalApiService(manager repository) {
+    public ExternalApiService(PriceRepository repository) {
         this.repository = repository;
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 10000) // 10 seconds
     public void fetchAllMetals() {
         for (String metal : METALS) {
             fetchAndSavePrice(metal);
@@ -37,8 +39,7 @@ public class ExternalApiService {
             String response = restTemplate.getForObject(url, String.class);
             JsonNode root = mapper.readTree(response);
 
-            if (root.has("value"))
-            {
+            if (root.has("value")) {
                 FetchedData row = new FetchedData();
                 row.setMetal(metalSymbol);
                 row.setCurrency(CURRENCY);

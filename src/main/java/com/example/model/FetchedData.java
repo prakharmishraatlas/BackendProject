@@ -1,6 +1,6 @@
 // this file tells us the schema of the table in which we are storing the data
 
-package com.example.demo;
+package com.example.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;

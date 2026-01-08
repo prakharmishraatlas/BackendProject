@@ -1,6 +1,6 @@
 // this is the main file where spring initializes and also our web server runs.
 
-package com.example.demo;
+package com.example;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
